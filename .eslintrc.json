@@ -1,14 +1,15 @@
 {
   "env": {
-    "browser": true,
-    "es6": true
+    "es6": true,
+    "node": true,
+    "jest": true
   },
   "extends": [
-    "airbnb",
-    // "plugin:react/recommended",
+    "airbnb-base",
     "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
     "prettier/@typescript-eslint",
-    "plugin:prettier/recommended",
+    "plugin:prettier/recommended"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -23,28 +24,11 @@
     "sourceType": "module"
   },
   "plugins": [
-    "react",
     "@typescript-eslint",
-    "prettier",
-    "react-hooks"
+    "react-hooks",
+    "prettier"
   ],
   "rules": {
-    "prettier/prettier": "error",
-    // "implicit-arrow-linebreak": "off",
-    "object-curly-newline": [
-      "error",
-      {
-        "ObjectExpression": "always",
-        "ObjectPattern": {
-          "multiline": true
-        },
-        "ImportDeclaration": "never",
-        "ExportDeclaration": {
-          "multiline": true,
-          "minProperties": 4
-        }
-      }
-    ],
     "react/jsx-props-no-spreading": "off",
     "react/prop-types": "off",
     "react/jsx-one-expression-per-line": "off",
@@ -59,11 +43,14 @@
         ]
       }
     ],
-    "import/prefer-default-export": "off",
-    "@typescript-eslint/explicit-function-return-type": [
+    "no-useless-constructor": "off",
+    "prettier/prettier": "error",
+    "class-methods-use-this": "off",
+    "@typescript-eslint/camelcase": "off",
+    "@typescript-eslint/no-unused-vars": [
       "error",
       {
-        "allowExpressions": true
+        "argsIgnorePattern": "_"
       }
     ],
     "import/extensions": [
