@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useContext } from 'react';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
@@ -10,9 +10,14 @@ import Button from '../../components/button';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import { Container, Content, Background } from './styles';
+import AuthContext from '../../context/AuthContext';
 
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null); // para poder setar os erros nos campos do Form (Unform)
+
+  const { name } = useContext(AuthContext);
+
+  console.log(name);
 
   const handleSubmit = useCallback(async (formData: object) => {
     try {
