@@ -20,9 +20,9 @@ interface SignInFormData {
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null); // para poder setar os erros nos campos do Form (Unform)
 
-  const { name, signIn } = useContext(AuthContext);
+  const { user, signIn } = useContext(AuthContext);
 
-  console.log(name);
+  console.log(user);
 
   const handleSubmit = useCallback(
     async (formData: SignInFormData) => {
