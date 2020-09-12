@@ -42,9 +42,12 @@ const SignIn: React.FC = () => {
 
         signIn({ email: formData.email, password: formData.password });
       } catch (error) {
-        const errors = getValidationErrors(error);
+        if (error instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(error);
 
-        formRef.current?.setErrors(errors);
+          formRef.current?.setErrors(errors);
+        }
+        // disparar um toast
       }
     },
     [signIn],
