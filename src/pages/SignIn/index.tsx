@@ -11,6 +11,7 @@ import getValidationErrors from '../../utils/getValidationErrors';
 
 import { Container, Content, Background } from './styles';
 import { useAuth } from '../../context/AuthContext';
+import { useToast } from '../../context/ToastContext';
 
 interface SignInFormData {
   email: string;
@@ -21,6 +22,7 @@ const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null); // para poder setar os erros nos campos do Form (Unform)
 
   const { user, signIn } = useAuth();
+  const { addToast } = useToast();
 
   console.log(user, 'SignIn/index.tsx');
 
@@ -40,7 +42,7 @@ const SignIn: React.FC = () => {
           abortEarly: false, // por padrão o Yup para no primeiro erro
         });
 
-        signIn({ email: formData.email, password: formData.password });
+        await signIn({ email: formData.email, password: formData.password });
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
           const errors = getValidationErrors(error);
@@ -48,9 +50,10 @@ const SignIn: React.FC = () => {
           formRef.current?.setErrors(errors);
         }
         // disparar um toast
+        addToast();
       }
     },
-    [signIn],
+    [signIn, addToast],
   );
 
   return (
