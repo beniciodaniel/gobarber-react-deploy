@@ -10,7 +10,7 @@ import Button from '../../components/button';
 import getValidationErrors from '../../utils/getValidationErrors';
 
 import { Container, Content, Background } from './styles';
-import { AuthContext } from '../../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 interface SignInFormData {
   email: string;
@@ -20,9 +20,9 @@ interface SignInFormData {
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null); // para poder setar os erros nos campos do Form (Unform)
 
-  const { user, signIn } = useContext(AuthContext);
+  const { user, signIn } = useAuth();
 
-  console.log(user);
+  console.log(user, 'SignIn/index.tsx');
 
   const handleSubmit = useCallback(
     async (formData: SignInFormData) => {
