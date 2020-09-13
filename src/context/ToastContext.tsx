@@ -1,37 +1,57 @@
-import React, { createContext, useCallback, useContext } from 'react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
+import { uuid } from 'uuidv4';
 
 import ToastContainer from '../components/ToastContainer';
 
-// 3
-interface ToastContextData {
-  addToast(): void;
-  removeToast(): void;
+export interface ToastMessage {
+  id: string;
+  type?: 'success' | 'error' | 'info';
+  title: string;
+  description?: string;
 }
 
-// 1
+interface ToastContextData {
+  addToast(message: Omit<ToastMessage, 'id'>): void;
+  removeToast(id: string): void;
+}
+
 const ToastContext = createContext<ToastContextData>({} as ToastContextData);
 
-// 2
 const ToastProvider: React.FC = ({ children }) => {
-  // 5
-  const addToast = useCallback(() => {
-    console.log('addToast');
-  }, []);
+  const [messages, setMessages] = useState<ToastMessage[]>([]);
 
-  // 6
-  const removeToast = useCallback(() => {
+  const addToast = useCallback(
+    ({ type, title, description }: Omit<ToastMessage, 'id'>) => {
+      console.log('addToast');
+      const id = uuid();
+
+      const toast = {
+        id,
+        type,
+        title,
+        description,
+      };
+
+      setMessages(oldMessages => [...oldMessages, toast]);
+    },
+    [],
+  );
+
+  const removeToast = useCallback((id: string) => {
     console.log('removeToast');
+    setMessages(oldMessages =>
+      oldMessages.filter(message => message.id !== id),
+    );
   }, []);
 
   return (
     <ToastContext.Provider value={{ addToast, removeToast }}>
-      <ToastContainer />
+      <ToastContainer messages={messages} />
       {children}
     </ToastContext.Provider>
   );
 };
 
-// 4
 // tipando o retorno do custom hook usando o próprio contexto
 function useToast(): ToastContextData {
   const context = useContext(ToastContext);

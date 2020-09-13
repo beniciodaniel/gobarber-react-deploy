@@ -50,7 +50,11 @@ const SignIn: React.FC = () => {
           formRef.current?.setErrors(errors);
         }
         // disparar um toast
-        addToast();
+        addToast({
+          type: 'success',
+          title: 'Sucesso na autenticação',
+          description: 'Sucesso ao fazer login',
+        });
       }
     },
     [signIn, addToast],
