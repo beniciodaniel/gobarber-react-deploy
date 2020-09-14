@@ -3,7 +3,7 @@ import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import logoImg from '../../assets/logo.svg';
 
 import Input from '../../components/input';
@@ -24,6 +24,7 @@ const SignIn: React.FC = () => {
 
   const { user, signIn } = useAuth();
   const { addToast } = useToast();
+  const history = useHistory();
 
   console.log(user, 'SignIn/index.tsx');
 
@@ -44,6 +45,7 @@ const SignIn: React.FC = () => {
         });
 
         await signIn({ email: formData.email, password: formData.password });
+        history.push('/dashboard');
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
           const errors = getValidationErrors(error);
@@ -53,13 +55,13 @@ const SignIn: React.FC = () => {
         }
         // disparar um toast
         addToast({
-          type: 'success',
-          title: 'Sucesso na autenticação',
-          description: 'Sucesso ao fazer login',
+          type: 'error',
+          title: 'Erro na autenticação',
+          description: 'Ocorreu um erro ao fazer login',
         });
       }
     },
-    [signIn, addToast],
+    [signIn, addToast, history],
   );
 
   return (
