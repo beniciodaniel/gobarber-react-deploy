@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { FiLogIn, FiMail } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
@@ -12,18 +12,23 @@ import getValidationErrors from '../../utils/getValidationErrors';
 
 import { Container, Content, Background, AnimationContainer } from './styles';
 import { useToast } from '../../context/ToastContext';
+import api from '../../services/api';
 
 interface ForgotPasswordFormData {
   email: string;
 }
 
 const ForgotPassword: React.FC = () => {
+  const [loading, setLoading] = useState(false);
+
   const formRef = useRef<FormHandles>(null); // para poder setar os erros nos campos do Form (Unform)
 
   const { addToast } = useToast();
 
   const handleSubmit = useCallback(
     async (formData: ForgotPasswordFormData) => {
+      setLoading(true);
+
       try {
         formRef.current?.setErrors({}); // para sempre fazer a validação do zero
 
@@ -38,7 +43,15 @@ const ForgotPassword: React.FC = () => {
         });
 
         // recuperação de senha
-        // falta implementar aqui
+        await api.post('/password/forgot', {
+          email: formData.email,
+        });
+        addToast({
+          type: 'success',
+          title: 'E-mail de recuperação enviado',
+          description:
+            'Enviamos um e-mail para confirmar a recuperação de senha, cheque sua caixa de entrada',
+        });
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
           const errors = getValidationErrors(error);
@@ -53,6 +66,8 @@ const ForgotPassword: React.FC = () => {
           description:
             'Ocorreu um erro ao tentar realizar recuperação de senha, tente novamente',
         });
+      } finally {
+        setLoading(false);
       }
     },
     [addToast],
@@ -68,7 +83,9 @@ const ForgotPassword: React.FC = () => {
             <h1>Recuperar senha</h1>
             <Input icon={FiMail} name="email" placeholder="E-mail" />
 
-            <Button type="submit">Recuperar</Button>
+            <Button loading={loading} type="submit">
+              Recuperar
+            </Button>
           </Form>
 
           <Link to="/">
