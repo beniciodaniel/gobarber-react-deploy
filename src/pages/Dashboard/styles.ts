@@ -190,6 +190,7 @@ export const Appointment = styled.div`
 
   span {
     margin-left: auto;
+    width: 70px;
 
     display: flex;
     align-items: center;
