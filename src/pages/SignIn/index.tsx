@@ -26,8 +26,6 @@ const SignIn: React.FC = () => {
   const { addToast } = useToast();
   const history = useHistory();
 
-  console.log(user, 'SignIn/index.tsx');
-
   const handleSubmit = useCallback(
     async (formData: SignInFormData) => {
       try {
