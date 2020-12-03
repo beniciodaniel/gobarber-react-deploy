@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, wait, waitFor } from '@testing-library/react';
 import SignIn from '../../pages/SignIn';
 
 const mockedHistoryPush = jest.fn();
@@ -10,6 +10,14 @@ jest.mock('react-router-dom', () => {
       push: mockedHistoryPush,
     }),
     Link: ({ children }: { children: React.ReactNode }) => children,
+  };
+});
+
+jest.mock('../../context/AuthContext', () => {
+  return {
+    useAuth: () => ({
+      signIn: jest.fn(),
+    }),
   };
 });
 
@@ -26,6 +34,8 @@ describe('SignIn Page', () => {
 
     fireEvent.click(buttonElement);
 
-    expect(mockedHistoryPush).toHaveBeenCalledWith('/dashboard');
+    waitFor(() => {
+      expect(mockedHistoryPush).toHaveBeenCalledWith('/dashboard');
+    });
   });
 });
