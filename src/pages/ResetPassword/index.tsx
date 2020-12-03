@@ -21,7 +21,7 @@ interface ResetPasswordFormData {
 }
 
 const ResetPassword: React.FC = () => {
-  const formRef = useRef<FormHandles>(null); // para poder setar os erros nos campos do Form (Unform)
+  const formRef = useRef<FormHandles>(null);
 
   const { addToast } = useToast();
 
@@ -31,7 +31,7 @@ const ResetPassword: React.FC = () => {
   const handleSubmit = useCallback(
     async (formData: ResetPasswordFormData) => {
       try {
-        formRef.current?.setErrors({}); // para sempre fazer a validação do zero
+        formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
           password: Yup.string().required('Senha obrigatória'),
@@ -42,17 +42,22 @@ const ResetPassword: React.FC = () => {
         });
 
         await schema.validate(formData, {
-          abortEarly: false, // por padrão o Yup para no primeiro erro
+          abortEarly: false,
         });
 
         const { password, password_confirmation } = formData;
-        const token = location.search.replace('?token=', '');
+        const token = new URLSearchParams(location.search).get('token');
 
         if (!token) {
+          addToast({
+            type: 'error',
+            title: 'Erro ao resetar senha',
+            description:
+              'Ocorreu um erro ao resetar sua senha, tente novamente',
+          });
           throw new Error();
         }
 
-        // chamada a api
         await api.post('/password/reset', {
           password,
           password_confirmation,
@@ -67,7 +72,7 @@ const ResetPassword: React.FC = () => {
           formRef.current?.setErrors(errors);
           return;
         }
-        // disparar um toast
+
         addToast({
           type: 'error',
           title: 'Erro ao resetar senha',

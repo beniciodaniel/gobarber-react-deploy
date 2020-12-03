@@ -25,7 +25,7 @@ jest.mock('../../context/ToastContext', () => {
   };
 });
 
-describe('SignIn Page', () => {
+describe('SignUp Page', () => {
   beforeEach(() => {
     mockedHistoryPush.mockClear();
     mockedAddToast.mockClear();
