@@ -22,7 +22,6 @@ const ToastProvider: React.FC = ({ children }) => {
 
   const addToast = useCallback(
     ({ type, title, description }: Omit<ToastMessage, 'id'>) => {
-      console.log('addToast');
       const id = uuid();
 
       const toast = {
@@ -38,7 +37,6 @@ const ToastProvider: React.FC = ({ children }) => {
   );
 
   const removeToast = useCallback((id: string) => {
-    console.log('removeToast');
     setMessages(oldMessages =>
       oldMessages.filter(message => message.id !== id),
     );

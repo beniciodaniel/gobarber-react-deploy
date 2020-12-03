@@ -12,8 +12,8 @@ import Input from '../../components/input';
 import Button from '../../components/button';
 import getValidationErrors from '../../utils/getValidationErrors';
 
-import api from '../../services/api';
 import { useToast } from '../../context/ToastContext';
+import api from '../../services/api';
 
 interface SignUpFormData {
   name: string;
@@ -22,16 +22,14 @@ interface SignUpFormData {
 }
 
 const SignUp: React.FC = () => {
-  const formRef = useRef<FormHandles>(null); // para poder setar os erros nos campos do Form (Unform)
+  const formRef = useRef<FormHandles>(null);
   const { addToast } = useToast();
   const history = useHistory();
-
-  console.log(formRef, 'formRef SignUp');
 
   const handleSubmit = useCallback(
     async (formData: SignUpFormData) => {
       try {
-        formRef.current?.setErrors({}); // para sempre fazer a validação do zero
+        formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
           name: Yup.string().required('Nome obrigatório'),
@@ -42,11 +40,13 @@ const SignUp: React.FC = () => {
         });
 
         await schema.validate(formData, {
-          abortEarly: false, // por padrão o Yup para no primeiro erro
+          abortEarly: false,
         });
 
-        await api.post('/users', formData); // cadastrando usuário no backend
-        history.push('/'); // redirecionando para login
+        await api.post('/users', formData);
+
+        history.push('/');
+
         addToast({
           type: 'success',
           title: 'Cadastro realizado!',
@@ -57,9 +57,17 @@ const SignUp: React.FC = () => {
           const errors = getValidationErrors(error);
 
           formRef.current?.setErrors(errors);
+
+          addToast({
+            type: 'error',
+            title: 'Erro no cadastro',
+            description:
+              'Verifique os dados inseridos no formulário novamente ;)',
+          });
+
           return;
         }
-        // disparar um toast
+
         addToast({
           type: 'error',
           title: 'Erro no cadastro',
