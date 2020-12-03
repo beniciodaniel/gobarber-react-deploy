@@ -29,7 +29,7 @@ const SignIn: React.FC = () => {
   const handleSubmit = useCallback(
     async (formData: SignInFormData) => {
       try {
-        formRef.current?.setErrors({}); // para sempre fazer a validação do zero
+        formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
           email: Yup.string()
@@ -39,10 +39,11 @@ const SignIn: React.FC = () => {
         });
 
         await schema.validate(formData, {
-          abortEarly: false, // por padrão o Yup para no primeiro erro
+          abortEarly: false,
         });
 
         await signIn({ email: formData.email, password: formData.password });
+
         history.push('/dashboard');
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
@@ -51,7 +52,7 @@ const SignIn: React.FC = () => {
           formRef.current?.setErrors(errors);
           return;
         }
-        // disparar um toast
+
         addToast({
           type: 'error',
           title: 'Erro na autenticação',
