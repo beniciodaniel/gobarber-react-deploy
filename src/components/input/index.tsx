@@ -18,11 +18,10 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const Input: React.FC<InputProps> = ({
   name,
-  containerStyle = {}, // inicializando como objeto vazio
+  containerStyle = {},
   icon: Icon,
   ...otherProps
 }) => {
-  // como se fosse o jQuery para maniplar diretamente o elemento do dom
   const inputRef = useRef<HTMLInputElement>(null);
   const { fieldName, defaultValue, error, registerField } = useField(name);
 
@@ -41,8 +40,8 @@ const Input: React.FC<InputProps> = ({
   useEffect(() => {
     registerField({
       name: fieldName,
-      ref: inputRef.current, // o elemento em si, ex <input></input>
-      path: 'value', // document.querySelector('input').value -> valor do campo
+      ref: inputRef.current,
+      path: 'value',
     });
   }, [fieldName, registerField]);
 
@@ -52,6 +51,7 @@ const Input: React.FC<InputProps> = ({
       isErrored={!!error}
       isFocused={isFocused}
       isFilled={isFilled}
+      data-testid="input-container"
     >
       {Icon && <Icon size={20} />}
       <input
