@@ -25,7 +25,6 @@ interface AuthContextData {
   updateUser(data: User): void;
 }
 
-// Hack para tirar o erro do Typescript de inicializar um contexto vazio
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC = ({ children }) => {
@@ -89,10 +88,6 @@ const AuthProvider: React.FC = ({ children }) => {
 
 function useAuth(): AuthContextData {
   const context = useContext(AuthContext);
-
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
 
   return context;
 }
