@@ -21,7 +21,7 @@ interface ForgotPasswordFormData {
 const ForgotPassword: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
-  const formRef = useRef<FormHandles>(null); // para poder setar os erros nos campos do Form (Unform)
+  const formRef = useRef<FormHandles>(null);
 
   const { addToast } = useToast();
 
@@ -30,7 +30,7 @@ const ForgotPassword: React.FC = () => {
       setLoading(true);
 
       try {
-        formRef.current?.setErrors({}); // para sempre fazer a validação do zero
+        formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
           email: Yup.string()
@@ -39,7 +39,7 @@ const ForgotPassword: React.FC = () => {
         });
 
         await schema.validate(formData, {
-          abortEarly: false, // por padrão o Yup para no primeiro erro
+          abortEarly: false,
         });
 
         // recuperação de senha

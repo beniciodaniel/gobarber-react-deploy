@@ -51,7 +51,8 @@ const Dashboard: React.FC = () => {
   const { signOut, user } = useAuth();
 
   const handleDateChange = useCallback((day: Date, modifiers: DayModifiers) => {
-    // precisa checar se está disponível, pois a lib permite clicar em dias indisponíveis por padrão
+    // precisa checar se está disponível,
+    // pois a lib permite clicar em dias indisponíveis por padrão
     if (modifiers.available && !modifiers.disabled) {
       setSelectedDate(day);
     }
