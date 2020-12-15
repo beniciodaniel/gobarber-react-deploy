@@ -20,7 +20,7 @@ interface SignInFormData {
 }
 
 const SignIn: React.FC = () => {
-  const formRef = useRef<FormHandles>(null); // para poder setar os erros nos campos do Form (Unform)
+  const formRef = useRef<FormHandles>(null);
 
   const { signIn } = useAuth();
   const { addToast } = useToast();
