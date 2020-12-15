@@ -113,7 +113,6 @@ const Profile: React.FC = () => {
   const handleAvatarChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       if (event.target.files) {
-        console.log(event.target.files);
         const data = new FormData();
 
         data.append('avatar', event.target.files[0]);
